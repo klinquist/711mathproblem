@@ -22,7 +22,7 @@ const start = new Date().getTime();
 let smallerArrays;
 const masterProcess = () => {
     console.log(`Master ${process.pid} is running`);
-    smallerArrays = chunkArray(m, Math.floor((max / numCPUs)+1));
+    smallerArrays = chunkArray(m, Math.ceil(max / numCPUs));
     console.log(smallerArrays.length);
     for (let i = 0; i < smallerArrays.length; i++) {
         console.log(`Forking process number ${i}...`);
@@ -36,18 +36,21 @@ const childProcess = () => {
     });
 };
 const splitFunc = (arr) => {
-    arr.map(w => {
-        m.slice().map(x => {
-            m.slice().map(y => {
-                m.slice().map(z => {
-                    if (w * x * y * z == 711 * 100 * 100 * 100 && w + x + y + z == 711) {
-                        console.log(`finished in ${(new Date().getTime() - start) / 1000}sec: ${w} ${x} ${y} ${z}`);
+    for (let w = 0; w < arr.length; w++){
+        for (let x = 0; x < m.length; x++) {
+            for (let y = 0; y < m.length; y++) {
+                for (let z = 0; z < m.length; z++) {
+                    //console.log(`Trying ${arr[w]} ${m[x]} ${m[y]} ${m[z]}`);
+                    if (arr[w] * m[x] * m[y] * m[z] == 711 * 100 * 100 * 100 && arr[w] + m[x] + m[y] + m[z] == 711) {
+                        console.log(`finished in ${(new Date().getTime() - start) / 1000}sec: ${arr[w]} ${m[x]} ${m[y]} ${m[z]}`);
                         process.exit(0);
                     }
-                });
-            });
-        });
-    });
+
+                }
+            }
+        }
+    }
+    process.exit(0);
 };
 
 
